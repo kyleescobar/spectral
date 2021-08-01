@@ -18,7 +18,5 @@ allprojects {
 
     dependencies {
         implementation(kotlin("stdlib"))
-        implementation("org.tinylog:tinylog-api-kotlin:_")
-        implementation("org.tinylog:tinylog-impl:_")
     }
 }

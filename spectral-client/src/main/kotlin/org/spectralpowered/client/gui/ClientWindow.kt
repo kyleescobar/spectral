@@ -17,38 +17,40 @@
 
 package org.spectralpowered.client.gui
 
+import org.spectralpowered.client.gui.sidebar.SidebarPane
 import org.spectralpowered.runescape.api.osrs
 import org.spectralpowered.runescape.api.osrs_window
 import org.tinylog.kotlin.Logger
 import java.awt.BorderLayout
 import java.awt.Dimension
+import java.awt.FlowLayout
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
 import javax.swing.ImageIcon
 import javax.swing.JFrame
+import kotlin.system.exitProcess
 
 class ClientWindow : JFrame("Spectral") {
 
-    val gameContainer = GameContainer(osrs_window)
+    private val gameContainer = GameContainer(osrs_window)
+    private val sidebarPane = SidebarPane()
+    private val menuBar = MenuBar()
 
     init {
         defaultCloseOperation = EXIT_ON_CLOSE
-        layout = BorderLayout()
         iconImages = APP_ICONS
+        layout = BorderLayout()
+        jMenuBar = menuBar
 
         initGameContainer()
+        initSidebarPane()
 
         /*
          * Register close listener
          */
         addWindowListener(object : WindowAdapter() {
             override fun windowClosing(e: WindowEvent) {
-                Logger.info("Shutting down Spectral client.")
-
-                /*
-                 * Terminate the Steam client process along with the current JVM process.
-                 */
-                Runtime.getRuntime().exec("taskkill /F /PID ${osrs.id}")
+                gameContainer.release()
                 e.window.dispose()
             }
         })
@@ -59,6 +61,10 @@ class ClientWindow : JFrame("Spectral") {
         gameContainer.preferredSize = gameContainer.size
         gameContainer.isVisible = true
         contentPane.add(gameContainer, BorderLayout.CENTER)
+    }
+
+    private fun initSidebarPane() {
+        add(sidebarPane, BorderLayout.EAST)
     }
 
     fun open() {
@@ -72,7 +78,13 @@ class ClientWindow : JFrame("Spectral") {
     fun close() {
         Logger.info("Closing Spectral client window.")
 
+        gameContainer.release()
         isVisible = false
+
+        /*
+         * Exit process.
+         */
+        exitProcess(0)
     }
 
     companion object {

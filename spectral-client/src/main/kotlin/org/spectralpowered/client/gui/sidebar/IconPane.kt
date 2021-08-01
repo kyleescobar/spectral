@@ -15,12 +15,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-dependencies {
-    implementation(project(":common"))
-    implementation(project(":spectral-logger"))
-    implementation(project(":runescape-api"))
-    implementation("com.formdev:flatlaf:_")
-    implementation("com.formdev:flatlaf-intellij-themes:_")
-    implementation("com.github.jiconfont:jiconfont-swing:_")
-    implementation("com.github.jiconfont:jiconfont-bundle:_")
+package org.spectralpowered.client.gui.sidebar
+
+import jiconfont.icons.font_awesome.FontAwesome
+import java.awt.Color
+import javax.swing.JToolBar
+import javax.swing.SwingConstants
+
+class IconPane : JToolBar() {
+
+    init {
+        orientation = SwingConstants.VERTICAL
+        isFloatable = false
+        background = Color(33, 37, 43)
+
+        add(IconButton(FontAwesome.CHEVRON_RIGHT))
+        add(IconButton(FontAwesome.PLUG))
+        add(IconButton(FontAwesome.CLOUD_DOWNLOAD))
+        add(IconButton(FontAwesome.CODE))
+    }
 }

@@ -15,12 +15,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-dependencies {
-    implementation(project(":common"))
-    implementation(project(":spectral-logger"))
-    implementation(project(":runescape-api"))
-    implementation("com.formdev:flatlaf:_")
-    implementation("com.formdev:flatlaf-intellij-themes:_")
-    implementation("com.github.jiconfont:jiconfont-swing:_")
-    implementation("com.github.jiconfont:jiconfont-bundle:_")
+package org.spectralpowered.client.gui.sidebar
+
+import jiconfont.icons.font_awesome.FontAwesome
+import jiconfont.swing.IconFontSwing
+import java.awt.Color
+import java.awt.Dimension
+import javax.swing.JButton
+
+class IconButton(icn: FontAwesome) : JButton() {
+
+    init {
+        IconFontSwing.register(FontAwesome.getIconFont())
+        icon = IconFontSwing.buildIcon(icn, 20f, Color(151, 159, 173))
+        size = Dimension(Int.MAX_VALUE, preferredSize.height)
+    }
 }

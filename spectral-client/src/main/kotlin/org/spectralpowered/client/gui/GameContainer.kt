@@ -18,9 +18,12 @@
 package org.spectralpowered.client.gui
 
 import com.sun.jna.Native
+import com.sun.jna.Pointer
+import com.sun.jna.platform.win32.Kernel32
 import com.sun.jna.platform.win32.User32
 import com.sun.jna.platform.win32.WinDef
-import com.sun.jna.platform.win32.WinUser.GWL_STYLE
+import com.sun.jna.platform.win32.WinUser.*
+import org.spectralpowered.runescape.api.osrs
 import java.awt.Canvas
 import java.awt.Graphics
 import java.util.concurrent.atomic.AtomicBoolean
@@ -33,8 +36,15 @@ class GameContainer(private val hostHandle: WinDef.HWND) : Canvas() {
 
     fun release() {
         if(attached.get()) {
-            User32.INSTANCE.SetParent(hostHandle, parentHandle)
+            if(User32.INSTANCE.SetParent(hostHandle, parentHandle) == null) {
+                NativeError.handle("Failure when parenting host to parent handle.", Kernel32.INSTANCE.GetLastError())
+            }
+
             attached.set(false)
+            /*
+             * Terminate the Steam client process along with the current JVM process.
+             */
+            Runtime.getRuntime().exec("taskkill /F /PID ${osrs.id}")
         }
     }
 
@@ -48,12 +58,16 @@ class GameContainer(private val hostHandle: WinDef.HWND) : Canvas() {
                 /*
                  * Parent / dock the windows into the JFrame (selfHandle)
                  */
-                User32.INSTANCE.SetParent(hostHandle, selfHandle)
+                if(User32.INSTANCE.SetParent(hostHandle, selfHandle) == null) {
+                    NativeError.handle("Failed to parent host handle to the local JFrame handle.", Kernel32.INSTANCE.GetLastError())
+                }
 
                 /*
                  * Remove window decorations from the client window handle.
                  */
-                User32.INSTANCE.SetWindowLong(hostHandle, GWL_STYLE, 0)
+                User32.INSTANCE.SetWindowLong(hostHandle, GWL_STYLE, User32.INSTANCE.GetWindowLong(hostHandle, GWL_STYLE)
+                            and (WS_THICKFRAME or WS_BORDER or WS_DLGFRAME or WS_CAPTION or WS_MINIMIZEBOX or WS_MAXIMIZEBOX or WS_SYSMENU)
+                )
 
                 /*
                  * Make sure we Show the window
@@ -71,13 +85,33 @@ class GameContainer(private val hostHandle: WinDef.HWND) : Canvas() {
         super.paint(g)
 
         /*
-         * Handle window movement before we redraw the window.
-         */
-        User32.INSTANCE.MoveWindow(hostHandle, 0, 0, width, height, true)
-
-        /*
          * Dock the native game client to this component.
          */
         attach()
+
+        /*
+         * Remove window decorations from the client window handle.
+         */
+        User32.INSTANCE.SetWindowLong(hostHandle, GWL_STYLE, User32.INSTANCE.GetWindowLong(hostHandle, GWL_STYLE)
+                and (WS_THICKFRAME or WS_BORDER or WS_DLGFRAME or WS_CAPTION or WS_MINIMIZEBOX or WS_MAXIMIZEBOX or WS_SYSMENU).inv()
+        )
+
+        User32.INSTANCE.SetWindowPos(hostHandle, null, 0, 0, width, height, SWP_NOZORDER)
+        User32.INSTANCE.SetWindowPos(hostHandle, WinDef.HWND(Pointer.createConstant(-2)), 0, 0, 0, 0, SWP_NOSIZE or SWP_NOMOVE)
+
+    }
+
+    private class NativeError private constructor(message: String): RuntimeException(message) {
+
+        private val HWND_TOPMOST = WinDef.HWND(Pointer.createConstant(-2))
+
+        companion object {
+
+            fun handle(message: String, code: Int) {
+                if(code != 0) {
+                    throw NativeError(message)
+                }
+            }
+        }
     }
 }

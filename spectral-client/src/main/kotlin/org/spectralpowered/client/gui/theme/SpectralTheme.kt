@@ -18,31 +18,20 @@
 package org.spectralpowered.client.gui.theme
 
 import com.formdev.flatlaf.IntelliJTheme
-import org.tinylog.kotlin.Logger
 
-class SpectralTheme : IntelliJTheme.ThemeLaf(Util.loadTheme("spectral")) {
+class SpectralTheme : IntelliJTheme.ThemeLaf(
+    IntelliJTheme(SpectralTheme::class.java.getResourceAsStream("/themes/spectral.theme.json"))
+) {
 
     override fun getName(): String {
-        return "Spectral Powered Theme"
+        return "Spectral Theme"
     }
 
     companion object {
 
         fun install() {
-            Logger.info("Installing the Spectral Powered Swing LAF theme.")
             setup(SpectralTheme())
         }
 
-    }
-}
-
-private object Util {
-
-    fun loadTheme(name: String): IntelliJTheme {
-        return try {
-            IntelliJTheme(Util::class.java.getResourceAsStream("/themes/$name.theme.json"))
-        } catch(e : Exception) {
-            throw RuntimeException(e)
-        }
     }
 }

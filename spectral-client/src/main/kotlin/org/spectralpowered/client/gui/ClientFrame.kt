@@ -17,58 +17,54 @@
 
 package org.spectralpowered.client.gui
 
-import org.spectralpowered.client.gui.sidebar.SidebarPane
 import org.spectralpowered.runescape.api.osrs
 import org.spectralpowered.runescape.api.osrs_window
 import org.tinylog.kotlin.Logger
-import java.awt.BorderLayout
 import java.awt.Dimension
-import java.awt.FlowLayout
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
 import javax.swing.ImageIcon
 import javax.swing.JFrame
-import kotlin.system.exitProcess
 
-class ClientWindow : JFrame("Spectral") {
+class ClientFrame : JFrame("Spectral") {
 
-    private val gameContainer = GameContainer(osrs_window)
-    private val sidebarPane = SidebarPane()
-    private val menuBar = MenuBar()
+    private val nativeCanvas = NativeCanvas(osrs_window)
 
     init {
         defaultCloseOperation = EXIT_ON_CLOSE
-        iconImages = APP_ICONS
-        layout = BorderLayout()
-        jMenuBar = menuBar
+        size = Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT)
+        preferredSize = size
+        minimumSize = size
+        iconImages = ICONS
 
-        initGameContainer()
-        initSidebarPane()
+        initNativeCanvas()
 
         /*
-         * Register close listener
+         * Register a frame close hook.
          */
         addWindowListener(object : WindowAdapter() {
             override fun windowClosing(e: WindowEvent) {
-                gameContainer.release()
+                /*
+                 * Kill the task for the OSRS Steam client
+                 */
+                Runtime.getRuntime().exec("taskkill /F /PID ${osrs.id}")
+
                 e.window.dispose()
+
+                /*
+                 * Release the native canvase.
+                 */
+                nativeCanvas.release()
             }
         })
     }
 
-    private fun initGameContainer() {
-        gameContainer.size = Dimension(MIN_WIDTH, MIN_HEIGHT)
-        gameContainer.preferredSize = gameContainer.size
-        gameContainer.isVisible = true
-        contentPane.add(gameContainer, BorderLayout.CENTER)
-    }
-
-    private fun initSidebarPane() {
-        add(sidebarPane, BorderLayout.EAST)
+    private fun initNativeCanvas() {
+        add(nativeCanvas)
     }
 
     fun open() {
-        Logger.info("Opening Spectral client window.")
+        Logger.info("Opening the Spectral client frame.")
 
         pack()
         setLocationRelativeTo(null)
@@ -76,33 +72,22 @@ class ClientWindow : JFrame("Spectral") {
     }
 
     fun close() {
-        Logger.info("Closing Spectral client window.")
+        Logger.info("Closing the Spectral client frame.")
 
-        gameContainer.release()
         isVisible = false
-
-        /*
-         * Exit process.
-         */
-        exitProcess(0)
     }
 
     companion object {
+        private const val DEFAULT_WIDTH = 800
+        private const val DEFAULT_HEIGHT = 600
 
-        private const val MIN_WIDTH = 800
-        private const val MIN_HEIGHT = 600
-
-        /**
-         * A list of various sized application icons to be used for the Spectral client.
-         */
-        private val APP_ICONS = listOf(
+        private val ICONS = listOf(
             "/images/icons/icon16.png",
             "/images/icons/icon32.png",
             "/images/icons/icon64.png",
             "/images/icons/icon128.png",
             "/images/icons/icon256.png",
             "/images/icons/icon512.png",
-            "/images/icons/icon1024.png",
-        ).map { ClientWindow::class.java.getResource(it) }.map { ImageIcon(it).image }
+        ).map { ClientFrame::class.java.getResource(it) }.map { ImageIcon(it).image }
     }
 }

@@ -17,10 +17,9 @@
 
 package org.spectralpowered.client
 
-import org.koin.core.context.startKoin
-import org.spectralpowered.client.gui.ClientWindow
+import org.spectralpowered.client.gui.ClientFrame
 import org.spectralpowered.client.gui.theme.SpectralTheme
-import org.spectralpowered.common.get
+import org.spectralpowered.common.inject
 import org.spectralpowered.runescape.api.OSRS
 import org.tinylog.kotlin.Logger
 import java.nio.file.Path
@@ -30,7 +29,7 @@ import javax.swing.JFrame
 
 class Spectral {
 
-    lateinit var window: ClientWindow private set
+    private val frame: ClientFrame by inject()
 
     fun start() {
         Logger.info("Attaching JVM to the Old School RuneScape Steam client process.")
@@ -41,18 +40,27 @@ class Spectral {
         OSRS.attachClientProcess()
 
         /*
+         * Open the Spectral GUI.
+         */
+        this.openGui()
+    }
+
+    private fun openGui() {
+        /*
          * Enable decorated windows.
          */
         JFrame.setDefaultLookAndFeelDecorated(true)
         JDialog.setDefaultLookAndFeelDecorated(true)
 
         /*
-         * Open the Spectral client window.
+         * Install the Spectral LAF Theme
          */
         SpectralTheme.install()
 
-        window = ClientWindow()
-        window.open()
+        /*
+         * Open the client frame.
+         */
+        frame.open()
     }
 
     companion object {
@@ -61,22 +69,5 @@ class Spectral {
          * The data folder that Spectral stores components on your system.
          */
         val DATA_FOLDER: Path = Paths.get(System.getProperty("user.home")).resolve("spectral")
-
-        private val DI_MODULES = listOf(
-            ClientModule
-        )
-
-        @JvmStatic
-        fun main(args: Array<String>) {
-            /*
-             * Start Dependency Injector
-             */
-            startKoin { modules(DI_MODULES) }
-
-            /*
-             * Start the Spectral Client.
-             */
-            get<Spectral>().start()
-        }
     }
 }

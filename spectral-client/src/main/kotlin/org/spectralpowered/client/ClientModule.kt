@@ -18,7 +18,9 @@
 package org.spectralpowered.client
 
 import org.koin.dsl.module
+import org.spectralpowered.client.gui.ClientFrame
 
 val ClientModule = module {
     single { Spectral() }
+    single { ClientFrame() }
 }

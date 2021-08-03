@@ -17,8 +17,8 @@
 
 package org.spectralpowered.client.gui
 
-import org.spectralpowered.runescape.api.osrs
-import org.spectralpowered.runescape.api.osrs_window
+import org.spectralpowered.runescape.api.osrsHwnd
+import org.spectralpowered.runescape.api.osrsPid
 import org.tinylog.kotlin.Logger
 import java.awt.Dimension
 import java.awt.event.WindowAdapter
@@ -28,7 +28,7 @@ import javax.swing.JFrame
 
 class ClientFrame : JFrame("Spectral") {
 
-    private val nativeCanvas = NativeCanvas(osrs_window)
+    private val nativeCanvas = NativeCanvas(osrsHwnd)
 
     init {
         defaultCloseOperation = EXIT_ON_CLOSE
@@ -44,15 +44,16 @@ class ClientFrame : JFrame("Spectral") {
          */
         addWindowListener(object : WindowAdapter() {
             override fun windowClosing(e: WindowEvent) {
+                Logger.info("Terminating Old School RuneScape Steam client process.")
                 /*
                  * Kill the task for the OSRS Steam client
                  */
-                Runtime.getRuntime().exec("taskkill /F /PID ${osrs.id}")
+                Runtime.getRuntime().exec("taskkill /F /PID $osrsPid")
 
                 e.window.dispose()
 
                 /*
-                 * Release the native canvase.
+                 * Release the native canvas.
                  */
                 nativeCanvas.release()
             }
@@ -73,7 +74,6 @@ class ClientFrame : JFrame("Spectral") {
 
     fun close() {
         Logger.info("Closing the Spectral client frame.")
-
         isVisible = false
     }
 

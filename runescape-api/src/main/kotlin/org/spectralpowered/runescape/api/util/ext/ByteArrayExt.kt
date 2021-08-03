@@ -15,23 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    application
-}
+package org.spectralpowered.runescape.api.util.ext
 
-application {
-    mainClass.set("org.spectralpowered.launcher.Launcher")
-}
-
-tasks.named<JavaExec>("run") {
-    workingDir = rootProject.projectDir
-}
-
-dependencies {
-    implementation(project(":common"))
-    implementation(project(":spectral-client"))
-    implementation(project(":spectral-api"))
-    implementation(project(":runescape-api"))
-    implementation(project(":injector"))
-    implementation(project(":spectral-logger"))
+fun ByteArray.mask(offset: Long, mask: ByteArray, skipZero: Boolean = true): Boolean {
+    val o = offset.toInt()
+    for(i in 0..mask.lastIndex) {
+        val value = mask[i]
+        if(skipZero && value.toInt() == 0) continue
+        if(value != this[o + i]) return false
+    }
+    return true
 }

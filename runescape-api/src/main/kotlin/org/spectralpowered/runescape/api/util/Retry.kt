@@ -15,8 +15,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.spectralpowered.runescape.api.util
-
 /**
  * Runs an action and if it fails, it waits for a set delay time to pass before attempting again.
  */

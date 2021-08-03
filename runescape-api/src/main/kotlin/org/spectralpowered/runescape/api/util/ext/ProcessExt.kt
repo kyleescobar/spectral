@@ -15,23 +15,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    application
-}
+package org.spectralpowered.runescape.api.util.ext
 
-application {
-    mainClass.set("org.spectralpowered.launcher.Launcher")
-}
+import org.jire.kna.Pointer
+import org.jire.kna.attach.windows.WindowsAttachedProcess
+import org.jire.kna.nativelib.windows.Kernel32
 
-tasks.named<JavaExec>("run") {
-    workingDir = rootProject.projectDir
-}
+fun WindowsAttachedProcess.readForced(address: Long, buffer: Pointer, size: Int) = Kernel32.ReadProcessMemory(
+    handle.pointer,
+    address,
+    buffer.address,
+    size,
+    0
+)
 
-dependencies {
-    implementation(project(":common"))
-    implementation(project(":spectral-client"))
-    implementation(project(":spectral-api"))
-    implementation(project(":runescape-api"))
-    implementation(project(":injector"))
-    implementation(project(":spectral-logger"))
-}
+fun WindowsAttachedProcess.writeForced(address: Long, buffer: Pointer, size: Int) = Kernel32.WriteProcessMemory(
+    handle.pointer,
+    address,
+    buffer.address,
+    size,
+    0
+)

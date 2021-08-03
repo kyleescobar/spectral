@@ -20,7 +20,7 @@ package org.spectralpowered.client
 import org.spectralpowered.client.gui.ClientFrame
 import org.spectralpowered.client.gui.theme.SpectralTheme
 import org.spectralpowered.common.inject
-import org.spectralpowered.runescape.api.OSRS
+import org.spectralpowered.runescape.api.attachOSRSProcess
 import org.tinylog.kotlin.Logger
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -37,7 +37,7 @@ class Spectral {
         /*
          * Attach to the Old School RuneScape Steam client process.
          */
-        OSRS.attachClientProcess()
+        attachOSRSProcess()
 
         /*
          * Open the Spectral GUI.

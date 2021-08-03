@@ -16,14 +16,16 @@
  */
 
 plugins {
-    `kotlin-dsl`
-    `java-gradle-plugin`
-}
-
-repositories {
-    mavenCentral()
+    application
 }
 
 dependencies {
-    implementation(gradleApi())
+    implementation(project(":cache"))
+    implementation(project(":common"))
+    implementation(project(":logger"))
+    implementation(project(":runescape-api"))
+    implementation(project(":runescape-hooks"))
+    implementation(project(":spectral-api"))
+    implementation(project(":spectral-client"))
+    implementation(project(":spectral-plugin"))
 }

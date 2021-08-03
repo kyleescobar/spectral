@@ -15,17 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/**
- * Runs an action and if it fails, it waits for a set delay time to pass before attempting again.
- */
-inline fun <T> retry(delay: Long = 0L, noinline exceptionHandler: ((Throwable) -> Unit)? = null, action: () -> T) {
-    while(!Thread.interrupted()) {
-        try {
-            action()
-            break
-        } catch(e : Throwable) {
-            exceptionHandler?.invoke(e)
-            Thread.sleep(delay)
-        }
-    }
-}
+package org.spectralpowered.runescape.api.util.ext
+
+import com.sun.jna.Memory
+
+fun Memory?.readable() = this != null
+
+fun Memory.byte(address: Long) = getByte(address)
+fun Memory.short(address: Long) = getShort(address)
+fun Memory.int(address: Long) = getInt(address)
+fun Memory.long(address: Long) = getLong(address)
+fun Memory.float(address: Long) = getFloat(address)
+fun Memory.double(address: Long) = getDouble(address)
+fun Memory.char(address: Long) = getChar(address)
+fun Memory.boolean(address: Long) = byte(address).toInt() != 0

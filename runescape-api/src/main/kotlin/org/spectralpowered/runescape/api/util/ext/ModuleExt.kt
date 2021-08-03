@@ -18,11 +18,46 @@
 package org.spectralpowered.runescape.api.util.ext
 
 import org.jire.kna.Pointer
+import org.jire.kna.attach.AttachedModule
 import org.jire.kna.attach.windows.WindowsAttachedModule
 import org.jire.kna.attach.windows.WindowsAttachedProcess
+import org.spectralpowered.runescape.api.offset.ModuleScan
+import org.spectralpowered.runescape.api.offset.Offset
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 
 fun WindowsAttachedModule.readForced(address: Long, buffer: Pointer, size: Int) =
     (process as WindowsAttachedProcess).readForced(offset(address), buffer, size)
 
 fun WindowsAttachedModule.writeForce(address: Long, buffer: Pointer, size: Int) =
     (process as WindowsAttachedProcess).writeForced(offset(address), buffer, size)
+
+operator fun AttachedModule.invoke(
+    patternOffset: Long = 0L,
+    addressOffset: Long = 0L,
+    read: Boolean = true,
+    subtract: Boolean = true
+) = ModuleScan(this, patternOffset, addressOffset, read, subtract)
+
+operator fun AttachedModule.invoke(
+    patternOffset: Long = 0L,
+    addressOffset: Long = 0L,
+    read: Boolean = true,
+    subtract: Boolean = true,
+    className: String
+) = Offset(this, patternOffset, addressOffset, read, subtract, className.toByteArray(Charsets.UTF_8))
+
+operator fun AttachedModule.invoke(
+    patternOffset: Long = 0L,
+    addressOffset: Long = 0L,
+    read: Boolean = true,
+    subtract: Boolean = true,
+    offset: Long
+) = Offset(
+    this,
+    patternOffset,
+    addressOffset,
+    read,
+    subtract,
+    ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putInt(offset.toInt()).array()
+)

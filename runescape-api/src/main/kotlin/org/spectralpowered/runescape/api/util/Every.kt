@@ -15,17 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/**
- * Runs an action and if it fails, it waits for a set delay time to pass before attempting again.
- */
-inline fun <T> retry(delay: Long = 0L, noinline exceptionHandler: ((Throwable) -> Unit)? = null, action: () -> T) {
+package org.spectralpowered.runescape.api.util
+
+import kotlin.concurrent.thread
+
+inline fun every(delay: Long = 0L, continuous: Boolean = false, crossinline pausePredicate: () -> Boolean = { false }, crossinline action: () -> Unit) = thread {
     while(!Thread.interrupted()) {
-        try {
+        if(continuous || !pausePredicate()) {
             action()
-            break
-        } catch(e : Throwable) {
-            exceptionHandler?.invoke(e)
-            Thread.sleep(delay)
         }
+        Thread.sleep(delay)
     }
 }

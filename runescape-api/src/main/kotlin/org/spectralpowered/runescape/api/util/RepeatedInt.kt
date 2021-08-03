@@ -15,17 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/**
- * Runs an action and if it fails, it waits for a set delay time to pass before attempting again.
- */
-inline fun <T> retry(delay: Long = 0L, noinline exceptionHandler: ((Throwable) -> Unit)? = null, action: () -> T) {
-    while(!Thread.interrupted()) {
-        try {
-            action()
-            break
-        } catch(e : Throwable) {
-            exceptionHandler?.invoke(e)
-            Thread.sleep(delay)
-        }
-    }
-}
+package org.spectralpowered.runescape.api.util
+
+data class RepeatedInt(val value: Int, val repeats: Int)
+
+operator fun Int.get(repeats: Int) = RepeatedInt(this, repeats)

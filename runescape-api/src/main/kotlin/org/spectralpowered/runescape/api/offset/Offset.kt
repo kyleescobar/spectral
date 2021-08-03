@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.spectralpowered.runescape.api.util
+package org.spectralpowered.runescape.api.offset
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap
 import org.jire.kna.Addressed

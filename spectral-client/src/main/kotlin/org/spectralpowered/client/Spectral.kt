@@ -20,7 +20,7 @@ package org.spectralpowered.client
 import org.spectralpowered.client.gui.ClientFrame
 import org.spectralpowered.client.gui.theme.SpectralTheme
 import org.spectralpowered.common.inject
-import org.spectralpowered.runescape.api.attachOSRSProcess
+import org.spectralpowered.runescape.api.memory.attachOSRSProcess
 import org.tinylog.kotlin.Logger
 import java.nio.file.Path
 import java.nio.file.Paths

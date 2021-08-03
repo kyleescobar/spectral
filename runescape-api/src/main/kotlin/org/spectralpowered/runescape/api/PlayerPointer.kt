@@ -15,17 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.spectralpowered.runescape.api.util.ext
+package org.spectralpowered.runescape.api
 
-import com.sun.jna.Memory
+import org.jire.kna.Addressed
 
-fun Memory?.readable() = this != null
-
-fun Memory.byte(address: Long) = getByte(address)
-fun Memory.short(address: Long) = getShort(address)
-fun Memory.int(address: Long) = getInt(address)
-fun Memory.long(address: Long) = getLong(address)
-fun Memory.float(address: Long) = getFloat(address)
-fun Memory.double(address: Long) = getDouble(address)
-fun Memory.char(address: Long) = getChar(address)
-fun Memory.boolean(address: Long) = byte(address).toInt() != 0
+class PlayerPointer(override val address: Long) : Addressed {
+    val self: PlayerPointer get() = PlayerPointer(this.offset(0x0))
+    val player: Player get() = Player(this.offset(0x8))
+}

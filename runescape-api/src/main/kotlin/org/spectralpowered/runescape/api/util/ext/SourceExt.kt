@@ -20,4 +20,4 @@ package org.spectralpowered.runescape.api.util.ext
 import org.jire.kna.ReadableSource
 import org.jire.kna.int
 
-fun ReadableSource.uint(address: Long, offset: Long = 0L) = int(address, offset).unsign()
+fun ReadableSource.uint(address: Long, offset: Long = 0) = int(address, offset).unsign()

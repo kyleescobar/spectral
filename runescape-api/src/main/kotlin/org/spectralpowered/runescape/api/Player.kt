@@ -15,14 +15,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.spectralpowered.runescape.api.util.ext
+package org.spectralpowered.runescape.api
 
-fun ByteArray.mask(offset: Long, mask: ByteArray, skipZero: Boolean = true): Boolean {
-    val o = offset.toInt()
-    for(i in 0..mask.lastIndex) {
-        val value = mask[i]
-        if(skipZero && value.toInt() == 0) continue
-        if(value != this[o + i]) return false
-    }
-    return true
+import org.jire.kna.Addressed
+import org.jire.kna.int
+import org.spectralpowered.runescape.api.memory.osrs
+
+class Player(override val address: Long) : Addressed {
+    val x: Int get() = osrs.int(this.offset(0x10))
+    val y: Int get() = osrs.int(this.offset(0x14))
+    val rotation: Int get() = osrs.int(this.offset(0x18))
+    val tick: Int get() = osrs.int(this.offset(0x24))
+    val combatLevel: Int get() = osrs.int(this.offset(0x3D0))
+    val headIconPvp: Int get() = osrs.int(this.offset(0x368))
+    val headIconPrayer: Int get() = osrs.int(this.offset(0x36C))
 }

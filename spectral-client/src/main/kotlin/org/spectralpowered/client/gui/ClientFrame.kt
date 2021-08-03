@@ -17,8 +17,8 @@
 
 package org.spectralpowered.client.gui
 
-import org.spectralpowered.runescape.api.osrsHwnd
-import org.spectralpowered.runescape.api.osrsPid
+import org.spectralpowered.runescape.api.memory.osrsHwnd
+import org.spectralpowered.runescape.api.memory.osrsPid
 import org.tinylog.kotlin.Logger
 import java.awt.Dimension
 import java.awt.event.WindowAdapter

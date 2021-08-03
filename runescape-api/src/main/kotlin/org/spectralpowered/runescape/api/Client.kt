@@ -15,24 +15,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.spectralpowered.runescape.api.util.ext
+package org.spectralpowered.runescape.api
 
-import org.jire.kna.Pointer
-import org.jire.kna.attach.windows.WindowsAttachedProcess
-import org.jire.kna.nativelib.windows.Kernel32
+import org.jire.kna.Addressed
+import org.jire.kna.int
+import org.jire.kna.set
+import org.spectralpowered.runescape.api.memory.osrs
 
-fun WindowsAttachedProcess.readForced(address: Long, buffer: Pointer, size: Int) = Kernel32.ReadProcessMemory(
-    handle.pointer,
-    address,
-    buffer.address,
-    size,
-    0
-)
+lateinit var client: Client internal set
 
-fun WindowsAttachedProcess.writeForced(address: Long, buffer: Pointer, size: Int) = Kernel32.WriteProcessMemory(
-    handle.pointer,
-    address,
-    buffer.address,
-    size,
-    0
-)
+class Client(override val address: Long) : Addressed {
+
+    var gameState: Int
+        get() = osrs.int(this.offset(0x491D88))
+        set(value) { osrs[this.offset(0x491D88)] = value }
+
+    var loginState: Int
+        get() = osrs.int(this.offset(0x5C15AC))
+        set(value) { osrs[this.offset(0x5C15AC)] = value }
+
+    val localPlayer: Player = PlayerPointer(this.offset(0x1B3A520)).player
+
+}

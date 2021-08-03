@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.spectralpowered.runescape.api
+package org.spectralpowered.runescape.api.memory
 
 import com.sun.jna.platform.win32.User32
 import com.sun.jna.platform.win32.WinDef
@@ -24,6 +24,9 @@ import org.jire.kna.attach.Attach
 import org.jire.kna.attach.windows.WindowsAttachAccess
 import org.jire.kna.attach.windows.WindowsAttachedModule
 import org.jire.kna.attach.windows.WindowsAttachedProcess
+import org.spectralpowered.runescape.api.Client
+import org.spectralpowered.runescape.api.client
+import org.spectralpowered.runescape.api.util.every
 import org.tinylog.kotlin.Logger
 import retry
 
@@ -31,8 +34,9 @@ private const val PROCESS_NAME = "osclient.exe"
 
 private const val WINDOW_TITLE = "Old School RuneScape"
 
-lateinit var osrsProc: WindowsAttachedProcess private set
-lateinit var osrs: WindowsAttachedModule private set
+internal lateinit var osrs: WindowsAttachedProcess private set
+private lateinit var moduleBase: WindowsAttachedModule private set
+
 lateinit var osrsHwnd: WinDef.HWND private set
 
 var osrsPid: Int = -1
@@ -42,7 +46,7 @@ fun attachOSRSProcess() {
     Logger.info("Waiting for Old School RuneScape process to start...")
 
     retry(0L) {
-        osrsProc = Attach.byName(PROCESS_NAME, WindowsAttachAccess.All) {} as WindowsAttachedProcess
+        osrs = Attach.byName(PROCESS_NAME, WindowsAttachAccess.All) {} as WindowsAttachedProcess
         osrsHwnd = User32.INSTANCE.FindWindow(null, WINDOW_TITLE)
         osrsPid = getProcessIdFromHwnd(osrsHwnd)
     }
@@ -51,8 +55,15 @@ fun attachOSRSProcess() {
      * Find the OSRS base module.
      */
     retry(0L) {
-        val modules = osrsProc.modules(attach = true)
-        osrs = modules.byName(PROCESS_NAME) as WindowsAttachedModule
+        val modules = osrs.modules(attach = true)
+        moduleBase = modules.byName(PROCESS_NAME) as WindowsAttachedModule
+        client = Client(moduleBase.address)
+    }
+
+    every(0L) {
+        if(client.gameState == 10 && client.loginState == 0) {
+            client.loginState = 12
+        }
     }
 
     Logger.info("Successfully attached to Old School RuneScape memory.")

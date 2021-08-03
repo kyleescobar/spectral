@@ -20,7 +20,8 @@ dependencies {
     implementation(project(":spectral-logger"))
     api("net.java.dev.jna:jna:_")
     api("net.java.dev.jna:jna-platform:_")
-    //api("org.jire.arrowhead:arrowhead:_")
-    implementation("org.jire:kna:_")
+    api("org.jire.strukt:strukt:_")
+    api("org.jire:kna:_")
     implementation("it.unimi.dsi:fastutil:_")
+    implementation("net.openhft:chronicle-core:_")
 }

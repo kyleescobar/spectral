@@ -19,6 +19,10 @@ plugins {
     application
 }
 
+application {
+    mainClass.set("org.spectralpowered.launcher.Launcher")
+}
+
 dependencies {
     implementation(project(":cache"))
     implementation(project(":common"))

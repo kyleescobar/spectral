@@ -15,8 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-dependencies {
-    implementation(project(":logger"))
-    api("io.insert-koin:koin-core:_")
-    api("io.insert-koin:koin-core-ext:_")
-}
+package org.spectralpowered.launcher
+
+import org.slf4j.LoggerFactory
+
+internal val Logger = LoggerFactory.getLogger("Launcher")

@@ -15,8 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-dependencies {
-    implementation(project(":logger"))
-    api("io.insert-koin:koin-core:_")
-    api("io.insert-koin:koin-core-ext:_")
+package org.spectralpowered.client
+
+import org.koin.dsl.module
+import org.spectralpowered.client.ui.SpectralWindow
+
+val ClientModule = module {
+    single { Spectral() }
+    single { SpectralWindow() }
 }

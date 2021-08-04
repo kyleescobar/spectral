@@ -15,10 +15,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-dependencies {
-    implementation(project(":common"))
-    implementation(project(":logger"))
-    implementation("org.jire.arrowhead:arrowhead:_")
-    implementation("net.java.dev.jna:jna:_")
-    implementation("net.java.dev.jna:jna-platform:_")
+package org.spectralpowered.runescape.api.util
+
+import org.jire.arrowhead.get
+import org.spectralpowered.runescape.api.process
+import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
+
+inline fun <reified T, V> osrs(offset: Long): T = object : ReadWriteProperty<V, T> {
+
+    override fun getValue(thisRef: V, property: KProperty<*>): T {
+        return process[offset]
+    }
+
+    override fun setValue(thisRef: V, property: KProperty<*>, value: T) {
+        process.setLong(offset, value)
+    }
+}
+
+private fun <T> Process.setLong(offset: Long, value: T) {
+
 }

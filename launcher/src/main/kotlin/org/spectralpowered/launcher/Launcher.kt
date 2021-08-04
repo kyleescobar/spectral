@@ -22,7 +22,7 @@ import org.spectralpowered.client.Spectral
 import org.spectralpowered.common.SPECTRAL_DATA_DIR
 import org.spectralpowered.common.SteamUtil
 import org.spectralpowered.common.get
-import kotlin.concurrent.thread
+import org.spectralpowered.runescape.api.hookSteamProcMemory
 
 object Launcher {
 
@@ -43,14 +43,14 @@ object Launcher {
         SteamUtil.startProcess()
 
         /*
+         * Hook the Steam client memory.
+         */
+        hookSteamProcMemory()
+
+        /*
          * Start the Spectral Client.
          */
         get<Spectral>().start()
-
-        /*
-         * Register the process shutdown hook.
-         */
-        this.registerShutdownHook()
     }
 
     @JvmStatic
@@ -90,9 +90,6 @@ object Launcher {
                 dir.mkdirs()
             }
         }
-    }
-
-    private fun registerShutdownHook() {
     }
 
 }

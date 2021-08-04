@@ -33,7 +33,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  * The reason it extends the [Canvas] class is because the component is a heavyweight element. This
  * means that the win32 api can actually parent its native components to it.
  */
-class NativeGameShell(val steamClientWindow: WinDef.HWND) : Canvas() {
+class NativeGameShell(private val steamClientWindow: WinDef.HWND) : Canvas() {
 
     /**
      * The window handle for the Spectral client JFrame

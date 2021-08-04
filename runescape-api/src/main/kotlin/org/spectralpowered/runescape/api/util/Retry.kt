@@ -15,10 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-dependencies {
-    implementation(project(":common"))
-    implementation(project(":logger"))
-    implementation("org.jire.arrowhead:arrowhead:_")
-    implementation("net.java.dev.jna:jna:_")
-    implementation("net.java.dev.jna:jna-platform:_")
+package org.spectralpowered.runescape.api.util
+
+inline fun <T> retry(delay: Long = 0L, noinline exceptionHandler: ((Throwable) -> Unit)? = null, action: () -> T) {
+    while(!Thread.interrupted()) {
+        try {
+            action()
+            break
+        } catch (e : Exception) {
+            exceptionHandler?.invoke(e)
+            Thread.sleep(delay)
+        }
+    }
 }

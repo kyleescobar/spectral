@@ -15,10 +15,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-dependencies {
-    implementation(project(":common"))
-    implementation(project(":logger"))
-    implementation("org.jire.arrowhead:arrowhead:_")
-    implementation("net.java.dev.jna:jna:_")
-    implementation("net.java.dev.jna:jna-platform:_")
+package org.spectralpowered.runescape.api
+
+import org.jire.arrowhead.Addressed
+import org.spectralpowered.runescape.api.util.osrs
+
+object Client : Addressed {
+
+    override var address: Long = 0L
+        internal set
+
+    var loginState: Int by osrs(0x5C15AC)
 }
+
+private operator fun <T, V> ReadWriteProperty<T, V>.setValue(t: T, property: KProperty<V?>, v: V) {
+
+}
+
+private operator fun <T, V> ReadWriteProperty<T, V>.getValue(t: T, property: KProperty<V?>): V {
+
+}
+
+

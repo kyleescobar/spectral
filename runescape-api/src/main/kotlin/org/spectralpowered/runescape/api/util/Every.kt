@@ -15,32 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    `maven-publish`
-}
+package org.spectralpowered.runescape.api.util
 
-dependencies {
-    implementation(project(":common"))
-    implementation(project(":logger"))
-    api("org.jire.arrowhead:arrowhead:_")
-    api("net.java.dev.jna:jna:_")
-    api("net.java.dev.jna:jna-platform:_")
-    api("io.reactivex.rxjava3:rxjava:_")
-    api("io.reactivex.rxjava3:rxkotlin:_")
-    api("com.jakewharton.rxrelay2:rxrelay:_")
-}
+import kotlin.concurrent.thread
 
-publishing {
-    repositories {
-        mavenLocal()
-    }
-
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = "org.spectralpowered"
-            artifactId = "runescape-api"
-            version = "${project.version}"
-            from(components["java"])
-        }
+inline fun every(delay: Long = 1L, crossinline action: () -> Unit) = thread {
+    while(!Thread.interrupted()) {
+        action()
+        Thread.sleep(delay)
     }
 }

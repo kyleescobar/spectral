@@ -19,6 +19,11 @@ plugins {
     `maven-publish`
 }
 
+dependencies {
+    api(project(":runescape-api"))
+    implementation(project(":common"))
+}
+
 publishing {
     repositories {
         mavenLocal()

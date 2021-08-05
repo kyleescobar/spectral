@@ -19,10 +19,15 @@ package org.spectralpowered.runescape.api
 
 import org.jire.arrowhead.Module
 import org.jire.arrowhead.Process
+import org.jire.arrowhead.get
 import org.jire.arrowhead.processByName
 import org.slf4j.LoggerFactory
 import org.spectralpowered.common.SteamUtil
+import org.spectralpowered.runescape.api.util.every
+import org.spectralpowered.runescape.api.util.property.MemoryValue
 import org.spectralpowered.runescape.api.util.retry
+
+internal val memoryObservers = mutableListOf<MemoryValue<*>>()
 
 lateinit var osrs: Process private set
 
@@ -52,5 +57,14 @@ fun hookSteamProcMemory() {
     }
 
     logger.info("Successfully hooked native process memory.")
+
+    /*
+     * Start watching memory for each memory observer.
+     */
+    every(1L) {
+        RSClient.gameState = osrs[RSClient.address + 0x490D88]
+        RSClient.loginState = osrs[RSClient.address + 0x5C05AC]
+    }
 }
+
 

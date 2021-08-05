@@ -15,32 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    `maven-publish`
-}
+package org.spectralpowered.api
 
-dependencies {
-    implementation(project(":common"))
-    implementation(project(":logger"))
-    api("org.jire.arrowhead:arrowhead:_")
-    api("net.java.dev.jna:jna:_")
-    api("net.java.dev.jna:jna-platform:_")
-    api("io.reactivex.rxjava3:rxjava:_")
-    api("io.reactivex.rxjava3:rxkotlin:_")
-    api("com.jakewharton.rxrelay2:rxrelay:_")
-}
+import org.spectralpowered.runescape.api.RSClient
 
-publishing {
-    repositories {
-        mavenLocal()
-    }
+/**
+ * Represents and holds values that are global to the RuneScape Client.
+ */
+object Client {
 
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = "org.spectralpowered"
-            artifactId = "runescape-api"
-            version = "${project.version}"
-            from(components["java"])
-        }
-    }
+    var gameState: Int by RSClient::gameState
+
+    var loginState: Int by RSClient::loginState
 }

@@ -19,6 +19,7 @@ package org.spectralpowered.runescape.api
 
 import org.jire.arrowhead.Addressed
 import org.jire.arrowhead.get
+import org.spectralpowered.runescape.api.util.property.MemoryValue
 
 object RSClient : Addressed {
 
@@ -26,19 +27,12 @@ object RSClient : Addressed {
         internal set
 
     var gameState: Int
-        get() = osrs[address + 0x491D88]
-        set(value) { osrs[address + 0x491D88] = value }
+        get() = osrs[address + 0x490D88]
+        set(value) { osrs[address + 0x490D88] = value }
 
-    /**
-     * Controls the currently active login page.
-     */
     var loginState: Int
-        get() = osrs[address + 0x5C15AC]
-        set(value) { osrs[address + 0x5C15AC] = value }
-
-    val localPlayerIndexes get() = Array<Int>(2048) { osrs[address + 0x5BDB00 + it] }
-
-    val localPlayers get() = Array<RSPlayer>(2048) { osrs[address + 0x1B32520 + it] }
+        get() = osrs[address + 0x5C05AC]
+        set(value) { osrs[address + 0x5C05AC] = value }
 
 }
 

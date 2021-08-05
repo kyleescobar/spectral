@@ -17,16 +17,17 @@
 
 package org.spectralpowered.client.ui
 
+import org.spectralpowered.client.Logger
 import org.spectralpowered.client.Spectral
 import org.spectralpowered.common.inject
-import javax.swing.JMenu
-import javax.swing.JMenuBar
-import javax.swing.JMenuItem
-import javax.swing.JSeparator
+import org.spectralpowered.plugin.PluginManager
+import java.awt.event.KeyEvent
+import javax.swing.*
 
 class MenuBar : JMenuBar() {
 
     private val spectral: Spectral by inject()
+    private val pluginManager: PluginManager by inject()
 
     init {
         /**
@@ -38,6 +39,19 @@ class MenuBar : JMenuBar() {
             }
 
             JMenuItem("Close Tab").also {
+                menu.add(it)
+            }
+
+            JSeparator().also {
+                menu.add(it)
+            }
+
+            JMenuItem("Reload Plugins").also {
+                it.accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_DOWN_MASK)
+                it.addActionListener {
+                    Logger.info("Reloading Spectral client plugin.")
+                    pluginManager.reloadPlugins()
+                }
                 menu.add(it)
             }
 
@@ -73,11 +87,36 @@ class MenuBar : JMenuBar() {
          * View Menu
          */
         JMenu("View").also { menu ->
-            JMenu("SubViews").also { submenu ->
-                JMenuItem("Pinned Plugin Tool Bar").also {
-                    submenu.add(it)
-                }
+            add(menu)
+        }
+
+        /**
+         * Profiles Menu
+         */
+        JMenu("Profiles").also { menu ->
+            JMenu("Switch Profile").also { submenu ->
+                menu.add(submenu)
             }
+            JMenuItem("Create New").also {
+                menu.add(it)
+            }
+            JMenuItem("Delete Current").also {
+                menu.add(it)
+            }
+            add(menu)
+        }
+
+        /**
+         * Help Menu
+         */
+        JMenu("Help").also { menu ->
+            JMenuItem("Discord").also {
+                menu.add(it)
+            }
+            JMenuItem("About").also {
+                menu.add(it)
+            }
+            add(menu)
         }
     }
 

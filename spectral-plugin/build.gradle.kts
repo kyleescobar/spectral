@@ -22,6 +22,7 @@ plugins {
 dependencies {
     api(project(":common"))
     api(project(":logger"))
+    implementation("io.github.classgraph:classgraph:_")
 }
 
 publishing {

@@ -22,6 +22,7 @@ plugins {
 dependencies {
     implementation(project(":common"))
     implementation(project(":logger"))
+    implementation(project(":spectral-plugin"))
     implementation("com.formdev:flatlaf:_")
     implementation("com.formdev:flatlaf-intellij-themes:_")
     implementation("net.java.dev.jna:jna:_")

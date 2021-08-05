@@ -32,6 +32,7 @@ class SpectralWindow : JFrame("Spectral") {
     private val spectral: Spectral by inject()
 
     private lateinit var nativeGameShell: NativeGameShell
+    private val menuBar = MenuBar()
 
     init {
         defaultCloseOperation = EXIT_ON_CLOSE
@@ -41,6 +42,7 @@ class SpectralWindow : JFrame("Spectral") {
         iconImages = APP_ICONS
         layout = BorderLayout()
         setLocationRelativeTo(null)
+        jMenuBar = menuBar
     }
 
     fun open(window: WinDef.HWND) {

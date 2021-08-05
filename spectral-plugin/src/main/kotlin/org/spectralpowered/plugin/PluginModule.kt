@@ -20,5 +20,5 @@ package org.spectralpowered.plugin
 import org.koin.dsl.module
 
 val PluginModule = module {
-
+    single { PluginManager() }
 }

@@ -17,6 +17,7 @@
 
 package org.spectralpowered.gradle.plugin.task
 
+import org.gradle.api.file.CopySpec
 import org.gradle.api.tasks.TaskAction
 import org.gradle.jvm.tasks.Jar
 import org.spectralpowered.gradle.plugin.SpectralPluginConfigExtension
@@ -24,7 +25,6 @@ import org.spectralpowered.gradle.plugin.SpectralPluginConfigExtension
 open class BuildPluginTask : Jar() {
 
     init {
-
         project.afterEvaluate {
             val extension = project.extensions.getByType(SpectralPluginConfigExtension::class.java)
 
@@ -41,8 +41,13 @@ open class BuildPluginTask : Jar() {
                 ))
             }
 
-            into("classes")
-            into("jar") {
+            from(project.configurations.getByName("runtimeClasspath"))
+
+            into("classes") {
+                with(project.tasks.getByName("jar") as CopySpec)
+            }
+
+            into("lib") {
                 it.from(project.configurations.getByName("pluginApi"))
             }
         }

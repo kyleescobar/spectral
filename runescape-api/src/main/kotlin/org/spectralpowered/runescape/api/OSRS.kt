@@ -51,8 +51,6 @@ fun hookSteamProcMemory() {
         RSClient.address = moduleBase.address
     }
 
-    println("GameState: ${RSClient.gameState} LoginState: ${RSClient.loginState}")
-
     logger.info("Successfully hooked native process memory.")
 }
 

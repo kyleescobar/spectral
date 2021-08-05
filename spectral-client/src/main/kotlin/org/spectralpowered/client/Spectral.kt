@@ -24,6 +24,7 @@ import org.spectralpowered.client.ui.SpectralTheme
 import org.spectralpowered.client.ui.SpectralWindow
 import org.spectralpowered.common.SteamUtil
 import org.spectralpowered.common.inject
+import org.spectralpowered.plugin.PluginManager
 import kotlin.system.exitProcess
 
 class Spectral {
@@ -32,12 +33,18 @@ class Spectral {
      * The Spectral client window frame.
      */
     private val window: SpectralWindow by inject()
+    private val pluginManager: PluginManager by inject()
 
     /**
      * Starts the Spectral client.
      */
     fun start() {
         Logger.info("Starting the Spectral client...")
+
+        /*
+         * Load all spectral client plugins.
+         */
+        pluginManager.loadPlugins()
 
         /*
          * Install the Spectral LAF Theme
@@ -59,6 +66,11 @@ class Spectral {
         if(window.isVisible) {
             window.close()
         }
+
+        /*
+         * Disable / unload all plugins.
+         */
+        pluginManager.unloadPlugins()
 
         /*
          * Stop the Steam client process if it is still running.

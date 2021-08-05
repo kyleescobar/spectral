@@ -19,9 +19,9 @@ package org.spectralpowered.plugin
 
 abstract class SpectralPlugin {
 
-    lateinit var name: String private set
-    lateinit var version: String private set
-    lateinit var author: String private set
+    lateinit var name: String internal set
+    lateinit var version: String internal set
+    lateinit var author: String internal set
 
     abstract fun onEnable()
 

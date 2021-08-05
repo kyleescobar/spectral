@@ -30,7 +30,7 @@ open class SpectralGradlePlugin : Plugin<Project> {
         val spectralExtension = project.extensions.create("spectral", SpectralConfigExtension::class.java)
 
         project.configurations.create("pluginApi") {
-            it.isTransitive = true
+            it.isTransitive = false
             it.isCanBeResolved = true
             it.isCanBeConsumed = true
         }

@@ -15,12 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.spectralpowered.launcher
+package org.spectralpowered.gradle.plugin
 
-import org.spectralpowered.client.ClientModule
-import org.spectralpowered.plugin.PluginModule
+open class SpectralPluginConfigExtension {
 
-val DI_MODULES = listOf(
-    ClientModule,
-    PluginModule
-)
+    var name: String = ""
+
+    var version: String = ""
+
+    var author: String = ""
+
+    var mainClass: String = ""
+
+}

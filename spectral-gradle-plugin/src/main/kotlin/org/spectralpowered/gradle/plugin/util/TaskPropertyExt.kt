@@ -15,12 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.spectralpowered.launcher
+package org.spectralpowered.gradle.plugin.util
 
-import org.spectralpowered.client.ClientModule
-import org.spectralpowered.plugin.PluginModule
+import org.gradle.api.DefaultTask
+import org.gradle.api.provider.Property
 
-val DI_MODULES = listOf(
-    ClientModule,
-    PluginModule
-)
+inline fun <reified T> DefaultTask.property(default: T? = null): Property<T> =
+    project.objects.property(T::class.java).apply {
+        set(default)
+    }

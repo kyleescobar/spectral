@@ -15,12 +15,31 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.spectralpowered.launcher
+package org.spectralpowered.runescape.api
 
-import org.spectralpowered.client.ClientModule
-import org.spectralpowered.plugin.PluginModule
+import org.jire.arrowhead.Addressed
+import org.jire.arrowhead.get
 
-val DI_MODULES = listOf(
-    ClientModule,
-    PluginModule
-)
+object RSClient : Addressed {
+
+    override var address: Long = 0L
+        internal set
+
+    var gameState: Int
+        get() = osrs[address + 0x491D88]
+        set(value) { osrs[address + 0x491D88] = value }
+
+    /**
+     * Controls the currently active login page.
+     */
+    var loginState: Int
+        get() = osrs[address + 0x5C15AC]
+        set(value) { osrs[address + 0x5C15AC] = value }
+
+    val localPlayerIndexes get() = Array<Int>(2048) { osrs[address + 0x5BDB00 + it] }
+
+    val localPlayers get() = Array<RSPlayer>(2048) { osrs[address + 0x1B32520 + it] }
+
+}
+
+

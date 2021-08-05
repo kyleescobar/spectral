@@ -15,12 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.spectralpowered.launcher
+package org.spectralpowered.plugin
 
-import org.spectralpowered.client.ClientModule
-import org.spectralpowered.plugin.PluginModule
+class PluginManager {
 
-val DI_MODULES = listOf(
-    ClientModule,
-    PluginModule
-)
+    fun init() {
+        Logger.info("Scanning for Spectral client Plugins...")
+
+
+    }
+}

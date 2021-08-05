@@ -59,11 +59,14 @@ class SpectralWindow : JFrame("Spectral") {
          */
         addWindowListener(object : WindowAdapter() {
             override fun windowClosing(e: WindowEvent) {
-                nativeGameShell.release()
-                isVisible = false
                 spectral.stop()
             }
         })
+    }
+
+    fun close() {
+        isVisible = false
+        nativeGameShell.release()
     }
 
     companion object {

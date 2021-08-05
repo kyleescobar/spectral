@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory
 import org.spectralpowered.common.SteamUtil
 import org.spectralpowered.runescape.api.util.retry
 
-lateinit var process: Process private set
+lateinit var osrs: Process private set
 
 internal lateinit var moduleBase: Module private set
 
@@ -41,15 +41,17 @@ fun hookSteamProcMemory() {
     logger.info("Attempting to hook the Old School RuneScape Steam client process.")
 
     retry(100L) {
-        process = processByName(SteamUtil.OSRS_PROCESS_NAME)!!
+        osrs = processByName(SteamUtil.OSRS_PROCESS_NAME)!!
 
         /*
          * Load the modules of the hooked process.
          */
-        process.loadModules()
-        moduleBase = process.modules[SteamUtil.OSRS_PROCESS_NAME]!!
-        Client.address = moduleBase.address
+        osrs.loadModules()
+        moduleBase = osrs.modules[SteamUtil.OSRS_PROCESS_NAME]!!
+        RSClient.address = moduleBase.address
     }
+
+    println("GameState: ${RSClient.gameState} LoginState: ${RSClient.loginState}")
 
     logger.info("Successfully hooked native process memory.")
 }

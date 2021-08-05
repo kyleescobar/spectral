@@ -15,12 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.spectralpowered.launcher
+plugins {
+    `kotlin-dsl`
+}
 
-import org.spectralpowered.client.ClientModule
-import org.spectralpowered.plugin.PluginModule
-
-val DI_MODULES = listOf(
-    ClientModule,
-    PluginModule
-)
+repositories {
+    mavenLocal()
+    mavenCentral()
+}

@@ -15,12 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.spectralpowered.launcher
+package org.spectralpowered.runescape.api
 
-import org.spectralpowered.client.ClientModule
-import org.spectralpowered.plugin.PluginModule
+import org.jire.arrowhead.Addressed
+import org.jire.arrowhead.get
 
-val DI_MODULES = listOf(
-    ClientModule,
-    PluginModule
-)
+class RSPlayer(override val address: Long) : Addressed {
+
+    val localX: Int get() = osrs[address + 0x10]
+
+    val localY: Int get() = osrs[address + 0x14]
+
+    val rotation: Int get() = osrs[address + 0x18]
+
+}

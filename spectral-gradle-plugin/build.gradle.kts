@@ -15,25 +15,36 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.spectralpowered.runescape.api
-
-import org.jire.arrowhead.Addressed
-import org.spectralpowered.runescape.api.util.osrs
-
-object Client : Addressed {
-
-    override var address: Long = 0L
-        internal set
-
-    var loginState: Int by osrs(0x5C15AC)
+plugins {
+    `java-gradle-plugin`
+    `maven-publish`
 }
 
-private operator fun <T, V> ReadWriteProperty<T, V>.setValue(t: T, property: KProperty<V?>, v: V) {
-
+dependencies {
+    gradleApi()
 }
 
-private operator fun <T, V> ReadWriteProperty<T, V>.getValue(t: T, property: KProperty<V?>): V {
-
+gradlePlugin {
+    plugins {
+        create("spectral-gradle-plugin") {
+            id = "org.spectralpowered.spectral-gradle-plugin"
+            displayName = "Spectral Gradle Plugin"
+            implementationClass = "org.spectralpowered.gradle.plugin.SpectralGradlePlugin"
+        }
+    }
 }
 
+publishing {
+    repositories {
+        mavenLocal()
+    }
 
+    publications {
+        create<MavenPublication>("spectral-gradle-plugin") {
+            groupId = "org.spectralpowered"
+            artifactId = "spectral-gradle-plugin"
+            version = project.version.toString()
+            from(components["java"])
+        }
+    }
+}

@@ -56,6 +56,10 @@ class Spectral {
     fun stop() {
         Logger.info("Stopping the Spectral client...")
 
+        if(window.isVisible) {
+            window.close()
+        }
+
         /*
          * Stop the Steam client process if it is still running.
          */

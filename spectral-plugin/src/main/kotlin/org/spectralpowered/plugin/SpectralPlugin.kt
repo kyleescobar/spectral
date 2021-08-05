@@ -15,12 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.spectralpowered.launcher
+package org.spectralpowered.plugin
 
-import org.spectralpowered.client.ClientModule
-import org.spectralpowered.plugin.PluginModule
+abstract class SpectralPlugin {
 
-val DI_MODULES = listOf(
-    ClientModule,
-    PluginModule
-)
+    lateinit var name: String private set
+    lateinit var version: String private set
+    lateinit var author: String private set
+
+    abstract fun onEnable()
+
+    abstract fun onDisable()
+
+}

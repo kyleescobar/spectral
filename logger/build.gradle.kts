@@ -15,8 +15,27 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+plugins {
+    `maven-publish`
+}
+
 dependencies {
     api("org.apache.logging.log4j:log4j-core:_")
     api("org.apache.logging.log4j:log4j-api:_")
     api("org.apache.logging.log4j:log4j-slf4j-impl:_")
+}
+
+publishing {
+    repositories {
+        mavenLocal()
+    }
+
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "org.spectralpowered"
+            artifactId = "logger"
+            version = "${project.version}"
+            from(components["java"])
+        }
+    }
 }

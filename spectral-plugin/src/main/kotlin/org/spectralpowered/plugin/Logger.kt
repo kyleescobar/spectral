@@ -15,24 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.spectralpowered.runescape.api.util
+package org.spectralpowered.plugin
 
-import org.jire.arrowhead.get
-import org.spectralpowered.runescape.api.process
-import kotlin.properties.ReadWriteProperty
-import kotlin.reflect.KProperty
+import org.slf4j.LoggerFactory
 
-inline fun <reified T, V> osrs(offset: Long): T = object : ReadWriteProperty<V, T> {
-
-    override fun getValue(thisRef: V, property: KProperty<*>): T {
-        return process[offset]
-    }
-
-    override fun setValue(thisRef: V, property: KProperty<*>, value: T) {
-        process.setLong(offset, value)
-    }
-}
-
-private fun <T> Process.setLong(offset: Long, value: T) {
-
-}
+internal val Logger = LoggerFactory.getLogger("Plugin")

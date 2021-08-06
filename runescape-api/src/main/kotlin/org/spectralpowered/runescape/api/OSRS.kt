@@ -17,17 +17,19 @@
 
 package org.spectralpowered.runescape.api
 
-import org.jire.kna.attach.Attach
-import org.jire.kna.attach.windows.WindowsAttachAccess
-import org.jire.kna.attach.windows.WindowsAttachedModule
-import org.jire.kna.attach.windows.WindowsAttachedProcess
+import org.jire.arrowhead.Module
+import org.jire.arrowhead.Process
+import org.jire.arrowhead.processByName
 import org.slf4j.LoggerFactory
+import org.spectralpowered.runescape.api.offset.ClientOffsets
+import org.spectralpowered.runescape.api.util.every
 import org.spectralpowered.runescape.api.util.retry
 
 internal val Logger = LoggerFactory.getLogger("RuneScape")
 
-lateinit var osrs: WindowsAttachedProcess private set
-lateinit var osrsModule: WindowsAttachedModule private set
+internal lateinit var osrs: Process private set
+
+internal lateinit var module: Module private set
 
 /**
  * Attaches this JVM to a native running process exe. This
@@ -36,20 +38,19 @@ lateinit var osrsModule: WindowsAttachedModule private set
 fun attachNativeProcess(processName: String) {
     Logger.info("Attaching current JVM to native process: '$processName'...")
 
-    /*
-     * Attempt to attach the current JVM to the process exe.
-     */
-    retry(100L) {
-        osrs = Attach.byName(processName, WindowsAttachAccess.All) {} as WindowsAttachedProcess
+    retry(1L) {
+        osrs = processByName(processName)!!
     }
 
-    /*
-     * Attempt to locate the attached process module base.
-     */
-    retry(100L) {
-        osrs.modules.attach(osrs)
-        osrsModule = osrs.modules.byName(processName) as WindowsAttachedModule
+    retry(1L) {
+        osrs.loadModules()
+        module = osrs.modules[processName]!!
     }
 
     Logger.info("Successfully attached JVM to the native process: '$processName'.")
+
+    every(1000L) {
+        println(ClientOffsets.dwLoginState.toULong().toString(16))
+        println(ClientOffsets.dwGameState.toULong().toString(16))
+    }
 }

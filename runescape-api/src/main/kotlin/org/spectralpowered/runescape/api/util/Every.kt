@@ -15,9 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.spectralpowered.runescape.api.util.ext
+package org.spectralpowered.runescape.api.util
 
-import org.jire.kna.ReadableSource
-import org.jire.kna.int
+import kotlin.concurrent.thread
 
-fun ReadableSource.uint(address: Long, offset: Long = 0L) = int(address, offset).unsign()
+inline fun every(delay: Long = 1L, crossinline action: () -> Unit) = thread {
+    while(!Thread.interrupted()) {
+        action()
+        Thread.sleep(delay)
+    }
+}

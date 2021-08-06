@@ -15,14 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.spectralpowered.runescape.api.util.offset
+package org.spectralpowered.runescape.api.offset
 
 import it.unimi.dsi.fastutil.bytes.ByteArrayList
-import org.jire.kna.attach.AttachedModule
+import org.jire.arrowhead.Module
 import org.spectralpowered.runescape.api.util.RepeatedInt
 
-internal class ModuleScan(
-    private val module: AttachedModule,
+class ModuleScan(
+    private val module: Module,
     private val patternOffset: Long,
     private val addressOffset: Long,
     private val read: Boolean,
@@ -36,7 +36,6 @@ internal class ModuleScan(
             is Number -> bytes.add(flag.toByte())
             is RepeatedInt -> repeat(flag.repeats) { bytes.add(flag.value.toByte()) }
         }
-
         return Offset(module, patternOffset, addressOffset, read, subtract, bytes.toByteArray())
     }
 }

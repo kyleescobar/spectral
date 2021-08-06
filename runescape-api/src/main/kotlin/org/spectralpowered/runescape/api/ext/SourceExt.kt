@@ -15,24 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.spectralpowered.runescape.api.util.ext
+package org.spectralpowered.runescape.api.ext
 
-import org.jire.kna.Pointer
-import org.jire.kna.attach.windows.WindowsAttachedProcess
-import org.jire.kna.nativelib.windows.Kernel32
+import org.jire.arrowhead.Source
+import org.jire.arrowhead.unsign
 
-fun WindowsAttachedProcess.readForced(address: Long, buffer: Pointer, size: Int) = Kernel32.ReadProcessMemory(
-    handle.pointer,
-    address,
-    buffer.address,
-    size,
-    0
-)
-
-fun WindowsAttachedProcess.writeForced(address: Long, buffer: Pointer, size: Int) = Kernel32.WriteProcessMemory(
-    handle.pointer,
-    address,
-    buffer.address,
-    size,
-    0
-)
+fun Source.uint(address: Long, offset: Long = 0L) = int(address, offset).unsign()

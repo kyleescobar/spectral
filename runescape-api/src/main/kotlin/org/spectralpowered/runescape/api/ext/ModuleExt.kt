@@ -15,43 +15,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.spectralpowered.runescape.api.util.ext
+package org.spectralpowered.runescape.api.ext
 
-import org.jire.kna.Pointer
-import org.jire.kna.attach.AttachedModule
-import org.jire.kna.attach.windows.WindowsAttachedModule
-import org.jire.kna.attach.windows.WindowsAttachedProcess
-import org.spectralpowered.runescape.api.util.offset.ModuleScan
-import org.spectralpowered.runescape.api.util.offset.Offset
+import org.spectralpowered.runescape.api.offset.ModuleScan
+import org.jire.arrowhead.Module
+import org.spectralpowered.runescape.api.offset.Offset
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
-fun WindowsAttachedModule.readForced(address: Long, buffer: Pointer, size: Int) =
-    (process as WindowsAttachedProcess).readForced(offset(address), buffer, size)
-
-fun WindowsAttachedModule.writeForced(address: Long, buffer: Pointer, size: Int) =
-    (process as WindowsAttachedProcess).writeForced(offset(address), buffer, size)
-
-internal operator fun AttachedModule.invoke(
+internal operator fun Module.invoke(
     patternOffset: Long = 0L,
     addressOffset: Long = 0L,
     read: Boolean = true,
     subtract: Boolean = true
 ) = ModuleScan(this, patternOffset, addressOffset, read, subtract)
 
-internal operator fun AttachedModule.invoke(
+internal operator fun Module.invoke(
     patternOffset: Long = 0L,
     addressOffset: Long = 0L,
-    read: Boolean = true,
-    subtract: Boolean = true,
-    className: String
-) = Offset(this, patternOffset, addressOffset, read, subtract, className.toByteArray(Charsets.UTF_8))
-
-internal operator fun AttachedModule.invoke(
-    patternOffset: Long = 0L,
-    addressOffset: Long = 0L,
-    read: Boolean = true,
-    subtract: Boolean = true,
+    read: Boolean = false,
+    subtract: Boolean = false,
     offset: Long
 ) = Offset(
     this,

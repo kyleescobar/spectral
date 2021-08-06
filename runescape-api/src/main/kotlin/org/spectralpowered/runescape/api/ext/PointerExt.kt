@@ -15,16 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.spectralpowered.runescape.api.util.ext
+package org.spectralpowered.runescape.api.ext
 
-import com.sun.jna.Memory
+import com.sun.jna.Pointer
 
-fun Memory?.readable() = this != null
-
-fun Memory.byte(address: Long) = getByte(address)
-fun Memory.short(address: Long) = getShort(address)
-fun Memory.int(address: Long) = getInt(address)
-fun Memory.long(address: Long) = getLong(address)
-fun Memory.double(address: Long) = getDouble(address)
-fun Memory.char(address: Long) = getChar(address)
-fun Memory.boolean(address: Long) = byte(address).toInt() != 0
+fun Pointer.mask(offset: Long, mask: ByteArray, skipZero: Boolean = true): Boolean {
+    for(i in 0..mask.lastIndex) {
+        val value = mask[i]
+        if(skipZero && value.toInt() == 0) continue
+        if(getByte(offset + i) != value) {
+            return false
+        }
+    }
+    return true
+}

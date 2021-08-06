@@ -17,14 +17,9 @@
 
 package org.spectralpowered.api
 
-import org.spectralpowered.runescape.api.RSClient
-
 /**
  * Represents and holds values that are global to the RuneScape Client.
  */
 object Client {
 
-    var gameState: Int by RSClient::gameState
-
-    var loginState: Int by RSClient::loginState
 }

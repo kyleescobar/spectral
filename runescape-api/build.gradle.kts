@@ -18,8 +18,8 @@
 dependencies {
     implementation(project(":common"))
     implementation(project(":logger"))
-    implementation("org.jire:kna:_")
     implementation("net.java.dev.jna:jna:_")
     implementation("net.java.dev.jna:jna-platform:_")
+    implementation("org.jire.arrowhead:arrowhead:_")
     implementation("it.unimi.dsi:fastutil:_")
 }

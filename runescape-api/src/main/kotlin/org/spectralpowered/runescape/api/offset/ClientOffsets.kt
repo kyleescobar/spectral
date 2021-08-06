@@ -15,10 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.spectralpowered.runescape.api.util.ext
+package org.spectralpowered.runescape.api.offset
 
-fun Byte.unsign() = java.lang.Byte.toUnsignedInt(this)
+import org.spectralpowered.runescape.api.ext.invoke
+import org.spectralpowered.runescape.api.module
+import org.spectralpowered.runescape.api.util.get
 
-fun Short.unsign() = java.lang.Short.toUnsignedInt(this)
+object ClientOffsets {
 
-fun Int.unsign() = java.lang.Integer.toUnsignedLong(this)
+    val dwGameState by module(2, 8)(0xC7, 0x05, 0[4], 0x02, 0x00, 0x00, 0x00, 0xEB, 0, 0x48, 0x8D, 0x8B, 0[4])
+
+    val dwLoginState by module(2, 4)(0x8B, 0x0D, 0[4], 0x85, 0xC9, 0x0F, 0x85, 0[4])
+
+}

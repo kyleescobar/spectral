@@ -17,9 +17,26 @@
 
 package org.spectralpowered.api
 
+import org.spectralpowered.api.type.LoginPage
+import org.spectralpowered.runescape.api.RSClient
+
 /**
  * Represents and holds values that are global to the RuneScape Client.
  */
 object Client {
+
+    /**
+     * The delay in milliseconds between client game refreshes
+     */
+    const val REFRESH: Long = 1L
+
+    /**
+     * The currently displayed login screen / page for the client.
+     *
+     * Setting this to "LoginPage.LOGIN" will force a client login.
+     */
+    var loginPage: LoginPage
+        get() = LoginPage.fromId(RSClient.loginState)
+        set(value) { RSClient.loginState = value.id }
 
 }

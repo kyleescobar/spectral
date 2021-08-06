@@ -17,11 +17,22 @@
 
 package org.spectralpowered.plugin
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
 abstract class SpectralPlugin {
 
-    lateinit var name: String internal set
+    var name: String = ""
+        internal set(value) {
+            field = value
+            logger = LoggerFactory.getLogger("Plugin-$name")
+        }
+
     lateinit var version: String internal set
+
     lateinit var author: String internal set
+
+    lateinit var logger: Logger private set
 
     abstract fun onEnable()
 

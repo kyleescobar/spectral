@@ -41,7 +41,6 @@ open class SpectralGradlePlugin : Plugin<Project> {
         project.dependencies.apply {
             add("implementation", "org.spectralpowered:spectral-plugin:${spectralExtension.version}")
             add("implementation", "org.spectralpowered:spectral-api:${spectralExtension.version}")
-            add("implementation", "org.spectralpowered:runescape-api:${spectralExtension.version}")
         }
 
         /*

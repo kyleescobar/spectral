@@ -27,9 +27,8 @@ import org.spectralpowered.runescape.api.util.retry
 
 internal val Logger = LoggerFactory.getLogger("RuneScape")
 
-internal lateinit var osrs: Process private set
-
-internal lateinit var module: Module private set
+lateinit var osrs: Process private set
+lateinit var module: Module private set
 
 /**
  * Attaches this JVM to a native running process exe. This
@@ -47,10 +46,10 @@ fun attachNativeProcess(processName: String) {
         module = osrs.modules[processName]!!
     }
 
-    Logger.info("Successfully attached JVM to the native process: '$processName'.")
+    /*
+     * Update the RSClient's address.
+     */
+    RSClient.address = module.address
 
-    every(1000L) {
-        println(ClientOffsets.dwLoginState.toULong().toString(16))
-        println(ClientOffsets.dwGameState.toULong().toString(16))
-    }
+    Logger.info("Successfully attached JVM to the native process: '$processName'.")
 }

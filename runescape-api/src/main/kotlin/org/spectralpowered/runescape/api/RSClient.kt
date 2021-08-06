@@ -15,7 +15,29 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-dependencies {
-    implementation(project(":common"))
-    api(project(":runescape-api"))
+package org.spectralpowered.runescape.api
+
+import org.jire.arrowhead.Addressed
+import org.jire.arrowhead.get
+import org.spectralpowered.runescape.api.offset.ClientOffsets.dwGameState
+import org.spectralpowered.runescape.api.offset.ClientOffsets.dwLoginState
+import org.spectralpowered.runescape.api.util.memory
+
+object RSClient : Addressed {
+
+    override var address: Long = 0L
+
+    /**
+     * The client game state value.
+     */
+    var gameState: Int by memory(address + dwGameState)
+
+    /**
+     * The login state value.
+     */
+    var loginState: Int
+        get() = osrs[address + dwLoginState]
+        set(value) { osrs[address + dwLoginState] = value }
+
+
 }

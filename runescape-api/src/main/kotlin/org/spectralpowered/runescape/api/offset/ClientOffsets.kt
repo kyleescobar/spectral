@@ -21,7 +21,7 @@ import org.spectralpowered.runescape.api.ext.invoke
 import org.spectralpowered.runescape.api.module
 import org.spectralpowered.runescape.api.util.get
 
-object ClientOffsets {
+internal object ClientOffsets {
 
     val dwGameState by module(2, 8)(0xC7, 0x05, 0[4], 0x02, 0x00, 0x00, 0x00, 0xEB, 0, 0x48, 0x8D, 0x8B, 0[4])
 

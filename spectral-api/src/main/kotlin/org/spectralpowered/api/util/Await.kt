@@ -15,7 +15,29 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-dependencies {
-    implementation(project(":common"))
-    api(project(":runescape-api"))
+package org.spectralpowered.api.util
+
+import org.spectralpowered.runescape.api.util.every
+
+class Await(
+    val clause: Boolean,
+    val recheck: Long = 1L,
+    val predicate: () -> Boolean
+) {
+
+    inline operator fun invoke(
+        clause: Boolean = this.clause,
+        recheck: Long = this.recheck,
+        crossinline action: () -> Unit
+    ) {
+        if(!clause) every(recheck) {
+            if(predicate()) {
+                action()
+            }
+        } else if(predicate()) {
+            action()
+        }
+    }
 }
+
+fun await(recheck: Long = 1L, clause: Boolean = false, until: () -> Boolean) = Await(clause, recheck, until)

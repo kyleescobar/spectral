@@ -22,7 +22,7 @@ import org.spectralpowered.client.Spectral
 import org.spectralpowered.common.SPECTRAL_DATA_DIR
 import org.spectralpowered.common.SteamUtil
 import org.spectralpowered.common.get
-import org.spectralpowered.runescape.api.hookSteamProcMemory
+import org.spectralpowered.runescape.api.attachNativeProcess
 
 object Launcher {
 
@@ -45,7 +45,7 @@ object Launcher {
         /*
          * Hook the Steam client memory.
          */
-        hookSteamProcMemory()
+        attachNativeProcess(SteamUtil.OSRS_PROCESS_NAME)
 
         /*
          * Start the Spectral Client.

@@ -15,8 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-dependencies {
-    implementation(project(":logger"))
-    api("io.insert-koin:koin-core:_")
-    api("io.insert-koin:koin-core-ext:_")
-}
+package org.spectralpowered.runescape.api.util
+
+data class RepeatedInt(val value: Int, val repeats: Int)
+
+operator fun Int.get(repeats: Int) = RepeatedInt(this, repeats)

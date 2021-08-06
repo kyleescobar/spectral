@@ -17,54 +17,39 @@
 
 package org.spectralpowered.runescape.api
 
-import org.jire.arrowhead.Module
-import org.jire.arrowhead.Process
-import org.jire.arrowhead.get
-import org.jire.arrowhead.processByName
+import org.jire.kna.attach.Attach
+import org.jire.kna.attach.windows.WindowsAttachAccess
+import org.jire.kna.attach.windows.WindowsAttachedModule
+import org.jire.kna.attach.windows.WindowsAttachedProcess
 import org.slf4j.LoggerFactory
-import org.spectralpowered.common.SteamUtil
-import org.spectralpowered.runescape.api.util.every
-import org.spectralpowered.runescape.api.util.property.MemoryValue
 import org.spectralpowered.runescape.api.util.retry
 
-internal val memoryObservers = mutableListOf<MemoryValue<*>>()
+internal val Logger = LoggerFactory.getLogger("RuneScape")
 
-lateinit var osrs: Process private set
-
-internal lateinit var moduleBase: Module private set
+lateinit var osrs: WindowsAttachedProcess private set
+lateinit var osrsModule: WindowsAttachedModule private set
 
 /**
- * Hooks the current JVM process into the Old School RuneScape Steam client process.
- * This allows for the JVM to freely read and write values in memory.
+ * Attaches this JVM to a native running process exe. This
+ * allows the JVM to interact with the memory of the process.
  */
-fun hookSteamProcMemory() {
-    val logger = LoggerFactory.getLogger("RuneScape")
+fun attachNativeProcess(processName: String) {
+    Logger.info("Attaching current JVM to native process: '$processName'...")
 
     /*
-     * Attach / hook to the memory process.
+     * Attempt to attach the current JVM to the process exe.
      */
-    logger.info("Attempting to hook the Old School RuneScape Steam client process.")
-
     retry(100L) {
-        osrs = processByName(SteamUtil.OSRS_PROCESS_NAME)!!
-
-        /*
-         * Load the modules of the hooked process.
-         */
-        osrs.loadModules()
-        moduleBase = osrs.modules[SteamUtil.OSRS_PROCESS_NAME]!!
-        RSClient.address = moduleBase.address
+        osrs = Attach.byName(processName, WindowsAttachAccess.All) {} as WindowsAttachedProcess
     }
-
-    logger.info("Successfully hooked native process memory.")
 
     /*
-     * Start watching memory for each memory observer.
+     * Attempt to locate the attached process module base.
      */
-    every(1L) {
-        RSClient.gameState = osrs[RSClient.address + 0x490D88]
-        RSClient.loginState = osrs[RSClient.address + 0x5C05AC]
+    retry(100L) {
+        osrs.modules.attach(osrs)
+        osrsModule = osrs.modules.byName(processName) as WindowsAttachedModule
     }
+
+    Logger.info("Successfully attached JVM to the native process: '$processName'.")
 }
-
-

@@ -17,7 +17,6 @@
 
 plugins {
     `java-gradle-plugin`
-    `maven-publish`
 }
 
 dependencies {
@@ -30,21 +29,6 @@ gradlePlugin {
             id = "org.spectralpowered.spectral-gradle-plugin"
             displayName = "Spectral Gradle Plugin"
             implementationClass = "org.spectralpowered.gradle.plugin.SpectralGradlePlugin"
-        }
-    }
-}
-
-publishing {
-    repositories {
-        mavenLocal()
-    }
-
-    publications {
-        create<MavenPublication>("spectral-gradle-plugin") {
-            groupId = "org.spectralpowered"
-            artifactId = "spectral-gradle-plugin"
-            version = project.version.toString()
-            from(components["java"])
         }
     }
 }

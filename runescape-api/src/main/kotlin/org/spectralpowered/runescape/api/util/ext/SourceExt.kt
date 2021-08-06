@@ -15,25 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.spectralpowered.runescape.api
+package org.spectralpowered.runescape.api.util.ext
 
-import org.jire.arrowhead.Addressed
-import org.jire.arrowhead.get
-import org.spectralpowered.runescape.api.util.property.MemoryValue
+import org.jire.kna.ReadableSource
+import org.jire.kna.int
 
-object RSClient : Addressed {
-
-    override var address: Long = 0L
-        internal set
-
-    var gameState: Int
-        get() = osrs[address + 0x490D88]
-        set(value) { osrs[address + 0x490D88] = value }
-
-    var loginState: Int
-        get() = osrs[address + 0x5C05AC]
-        set(value) { osrs[address + 0x5C05AC] = value }
-
-}
-
-
+fun ReadableSource.uint(address: Long, offset: Long = 0L) = int(address, offset).unsign()

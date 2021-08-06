@@ -15,13 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.spectralpowered.runescape.api.util
+package org.spectralpowered.runescape.api.util.ext
 
-import kotlin.concurrent.thread
+fun Byte.unsign() = java.lang.Byte.toUnsignedInt(this)
 
-inline fun every(delay: Long = 1L, crossinline action: () -> Unit) = thread {
-    while(!Thread.interrupted()) {
-        action()
-        Thread.sleep(delay)
-    }
-}
+fun Short.unsign() = java.lang.Short.toUnsignedInt(this)
+
+fun Int.unsign() = java.lang.Integer.toUnsignedLong(this)

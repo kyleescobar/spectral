@@ -15,17 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.spectralpowered.runescape.api
+package org.spectralpowered.runescape.api.util.ext
 
-import org.jire.arrowhead.Addressed
-import org.jire.arrowhead.get
+import com.sun.jna.Memory
 
-class RSPlayer(override val address: Long) : Addressed {
+fun Memory?.readable() = this != null
 
-    val localX: Int get() = osrs[address + 0x10]
-
-    val localY: Int get() = osrs[address + 0x14]
-
-    val rotation: Int get() = osrs[address + 0x18]
-
-}
+fun Memory.byte(address: Long) = getByte(address)
+fun Memory.short(address: Long) = getShort(address)
+fun Memory.int(address: Long) = getInt(address)
+fun Memory.long(address: Long) = getLong(address)
+fun Memory.double(address: Long) = getDouble(address)
+fun Memory.char(address: Long) = getChar(address)
+fun Memory.boolean(address: Long) = byte(address).toInt() != 0

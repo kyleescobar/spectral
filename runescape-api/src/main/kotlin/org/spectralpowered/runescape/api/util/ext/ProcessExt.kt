@@ -15,18 +15,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.spectralpowered.runescape.api.util.property
+package org.spectralpowered.runescape.api.util.ext
 
-import io.reactivex.Observable
-import kotlin.reflect.KProperty0
-import kotlin.reflect.jvm.isAccessible
+import org.jire.kna.Pointer
+import org.jire.kna.attach.windows.WindowsAttachedProcess
+import org.jire.kna.nativelib.windows.Kernel32
 
-@Suppress("UNCHECKED_CAST")
-fun <T : Any> KProperty0<T>.onChanged(): Observable<T> {
-    isAccessible = true
+fun WindowsAttachedProcess.readForced(address: Long, buffer: Pointer, size: Int) = Kernel32.ReadProcessMemory(
+    handle.pointer,
+    address,
+    buffer.address,
+    size,
+    0
+)
 
-    val delegate = this.getDelegate()
-    return delegate?.let {
-        (it as MemoryValue<*>).changed as Observable<T>
-    } ?: Observable.just(this as T)
-}
+fun WindowsAttachedProcess.writeForced(address: Long, buffer: Pointer, size: Int) = Kernel32.WriteProcessMemory(
+    handle.pointer,
+    address,
+    buffer.address,
+    size,
+    0
+)

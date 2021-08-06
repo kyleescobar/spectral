@@ -15,32 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    `maven-publish`
-}
-
 dependencies {
     implementation(project(":common"))
     implementation(project(":logger"))
-    api("org.jire.arrowhead:arrowhead:_")
-    api("net.java.dev.jna:jna:_")
-    api("net.java.dev.jna:jna-platform:_")
-    api("io.reactivex.rxjava3:rxjava:_")
-    api("io.reactivex.rxjava3:rxkotlin:_")
-    api("com.jakewharton.rxrelay2:rxrelay:_")
-}
-
-publishing {
-    repositories {
-        mavenLocal()
-    }
-
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = "org.spectralpowered"
-            artifactId = "runescape-api"
-            version = "${project.version}"
-            from(components["java"])
-        }
-    }
+    implementation("org.jire:kna:_")
+    implementation("net.java.dev.jna:jna:_")
+    implementation("net.java.dev.jna:jna-platform:_")
+    implementation("it.unimi.dsi:fastutil:_")
 }

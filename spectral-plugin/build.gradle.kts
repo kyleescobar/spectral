@@ -15,27 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    `maven-publish`
-}
-
 dependencies {
     api(project(":common"))
     api(project(":logger"))
     implementation("io.github.classgraph:classgraph:_")
-}
-
-publishing {
-    repositories {
-        mavenLocal()
-    }
-
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = "org.spectralpowered"
-            artifactId = "spectral-plugin"
-            version = "${project.version}"
-            from(components["java"])
-        }
-    }
 }
